@@ -46,22 +46,22 @@ class Coordinator: ObservableObject {
     @ViewBuilder
     func build(page: AppPages) -> some View {
         switch page {
-        case .main: WalkthroughView()
-        case .login: LoginView()
+        case .main: WalkthroughView(viewModel: WalkthroughViewModel(coordinator: self))
+        case .login: LoginView(viewModel: LoginViewModel(coordinator: self))
         }
     }
     
     @ViewBuilder
     func buildSheet(sheet: Sheet) -> some View {
         switch sheet {
-        case .forgotPassword: ForgotPasswordView()
+        case .forgotPassword: ForgotPasswordView(viewModel: ForgotPasswordViewModel(coordinator: self))
         }
     }
     
     @ViewBuilder
     func buildCover(cover: FullScreenCover) -> some View {
         switch cover {
-        case .signup: SignupView()
+        case .signup: SignupView(viewModel: SignupViewModel(coordinator: self))
         }
     }
 }

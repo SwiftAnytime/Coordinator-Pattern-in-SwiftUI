@@ -7,13 +7,18 @@
 
 import SwiftUI
 
-struct SignupView: View {
-    @EnvironmentObject private var coordinator: Coordinator
+struct SignupView<ViewModel: SignupViewModel>: View {
+
+    @StateObject private var viewModel: ViewModel
     @State private var username: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var isSecure: Bool = true
+    
+    init(viewModel: ViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         VStack {
@@ -97,7 +102,7 @@ struct SignupView: View {
             .padding(.horizontal, 30)
 
             Button(action: {
-                coordinator.dismissCover()
+                viewModel.dismiss()
             }) {
                 Text("Sign Up")
                     .foregroundColor(.white)
@@ -112,7 +117,7 @@ struct SignupView: View {
             Spacer()
 
             Button(action: {
-                coordinator.dismissCover()
+                viewModel.dismiss()
             }) {
                 Text("Already have an account?")
                     .foregroundColor(.blue)
@@ -125,5 +130,5 @@ struct SignupView: View {
 }
 
 #Preview {
-    SignupView()
+    SignupView(viewModel: SignupViewModel(coordinator: Coordinator()))
 }

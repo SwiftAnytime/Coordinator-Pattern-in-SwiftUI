@@ -7,12 +7,16 @@
 
 import SwiftUI
 
-struct LoginView: View {
+struct LoginView<ViewModel: LoginViewModel>: View {
     
-    @EnvironmentObject private var coordinator: Coordinator
+    @StateObject private var viewModel: ViewModel
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var isSecure: Bool = true
+    
+    init(viewModel: ViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack {
@@ -80,7 +84,7 @@ struct LoginView: View {
             
             VStack {
                 Button(action: {
-                    coordinator.presentSheet(.forgotPassword)
+                    viewModel.didTapForgotPassword(sheet: .forgotPassword)
                 }) {
                     Text("Forgot Password?")
                         .foregroundColor(.blue)
@@ -90,7 +94,7 @@ struct LoginView: View {
                 HStack {
                     Text("Don't have an account?")
                     Button(action: {
-                        coordinator.presentFullScreenCover(.signup)
+                        viewModel.didTapSignup(cover: .signup)
                     }) {
                         Text("Sign Up")
                             .foregroundColor(.blue)

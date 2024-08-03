@@ -7,9 +7,14 @@
 
 import SwiftUI
 
-struct ForgotPasswordView: View {
-    @EnvironmentObject private var coordinator: Coordinator
+struct ForgotPasswordView<ViewModel: ForgotPasswordViewModel>: View {
+
+    @StateObject private var viewModel: ViewModel
     @State private var email: String = ""
+    
+    init(viewModel: ViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         VStack {
@@ -40,7 +45,7 @@ struct ForgotPasswordView: View {
             .padding(.bottom, 20)
             
             Button(action: {
-                coordinator.dismissSheet()
+                viewModel.dismiss()
             }) {
                 Text("Submit")
                     .foregroundColor(.white)
@@ -55,7 +60,7 @@ struct ForgotPasswordView: View {
             Spacer()
             
             Button(action: {
-                coordinator.dismissSheet()
+                viewModel.dismiss()
             }) {
                 Text("Go Back")
                     .foregroundColor(.blue)
@@ -69,5 +74,5 @@ struct ForgotPasswordView: View {
 
 
 #Preview {
-    ForgotPasswordView()
+    ForgotPasswordView(viewModel: ForgotPasswordViewModel(coordinator: Coordinator()))
 }

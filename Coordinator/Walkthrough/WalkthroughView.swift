@@ -7,15 +7,19 @@
 
 import SwiftUI
 
-struct WalkthroughView: View {
+struct WalkthroughView<ViewModel: WalkthroughViewModel>: View {
     
-    @EnvironmentObject private var coordinator: Coordinator
+    @StateObject private var viewModel: ViewModel
+    
+    init(viewModel: ViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack {
             Spacer()
             Button {
-                coordinator.push(page: .login)
+                viewModel.didTapGetStarted(page: .login)
             } label: {
                 Text("Get Started")
                     .font(.title3)
@@ -31,5 +35,5 @@ struct WalkthroughView: View {
 }
 
 #Preview {
-    WalkthroughView()
+    WalkthroughView(viewModel: WalkthroughViewModel(coordinator: Coordinator()))
 }
